@@ -1,14 +1,13 @@
-# Use a lightweight OpenJDK runtime image
 FROM eclipse-temurin:17-jre-alpine
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy all the files from your folder into the container
 COPY . .
 
-# Grant execution permissions to your shell script (if needed)
-RUN chmod +x run.sh
+# Ensure the startup script has correct line endings and execution permissions
+RUN apk add --no-cache dos2unix && \
+    dos2unix run.sh && \
+    chmod +x run.sh
 
-# Run the jar file (adjust memory flags or arguments if necessary)
-CMD ["java", "-jar", "EaglesSPRelay.jar"]
+# Force the container to launch using your verified script
+CMD ["./run.sh"]
